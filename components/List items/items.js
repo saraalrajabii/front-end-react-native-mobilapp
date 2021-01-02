@@ -7,8 +7,8 @@ const Items = (props) => {
   console.log(props)
 // const {name,tagline,image} = props;
 const [items, setItems] = useState('');
-localStorage.setItem('userid',11)
-localStorage.setItem('location','amman')
+// localStorage.setItem('userid',11)
+// localStorage.setItem('location','amman')
 
 const Delete = (ID) => {
   

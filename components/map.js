@@ -8,6 +8,7 @@ import {  Descriptions } from 'antd';
 import GoogleMapReact from 'google-map-react';
 import { Button, Text,  View,} from 'react-native';
 import axios from "axios";
+import  AsyncStorage  from '@react-native-community/async-storage';
 // import Button from 'react-bootstrap/Button';
 const { MarkerWithLabel } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 Geocode.setApiKey("AIzaSyDhdSw1QzkXBrYnLSt3EF3izfHEhUj6LMc");
@@ -180,15 +181,24 @@ class LocationSearchModal extends React.Component {
             },
         })
     };
-    handleSubmit(){
+    async handleSubmit () { 
+        console.log('sfsd')
       var location = this.state.link;
-      localStorage.setItem('location',location)
-    //   console.log(location)
-    //   var user_id= localStorage.getItem('user_id')
-    //   axios.post("http://localhost:5000/insertmap", {'location': location,"user_id":user_id})
-    //     .then((res) => console.log(res))
-    //     .catch((err) => console.log(err))
-        window.location ='/additems'
+      console.log(location)
+     
+      try {
+        //to save token of logged in user in the storage
+     await AsyncStorage.setItem('location',location) 
+    
+     console.log('saved', location)
+     }
+    catch (e){
+    console.log(e)
+    }
+        //to get token of logged in user in the storage
+    const trial = await AsyncStorage.getItem('location')
+    console.log(trial)
+       
     }
     render() {
         const AsyncMap = withScriptjs(
@@ -249,7 +259,7 @@ class LocationSearchModal extends React.Component {
                     <Descriptions.Item label="State">{this.state.state}</Descriptions.Item>
                     <Descriptions.Item label="Address">{this.state.address}</Descriptions.Item>
                 </Descriptions>
-                <Button  type="submit"  onClick={this.handleSubmit.bind(this)}   title="Save location" />
+                <Button  type="submit"  onPress={this.handleSubmit.bind(this)}   title="Save location" />
                 <AsyncMap
                     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhdSw1QzkXBrYnLSt3EF3izfHEhUj6LMc&libraries=places"
                     loadingElement={
